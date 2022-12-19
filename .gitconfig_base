@@ -1,0 +1,33 @@
+[url "git@github.com:"]
+        insteadOf = https://github.com/
+[url "git@bitbucket.org:"]
+        insteadOf = https://bitbucket.org/
+
+[includeIf "gitdir/i:/Users/mathiastg/private/"]
+	path = ~/.gitconfig_private
+
+[alias]
+	rdev = "!git checkout master && git pull && git branch -D develop && git checkout develop && git reset --hard master"
+	this = branch --show-current
+	co = checkout
+	open = "!f() { 	git ls-remote --get-url | sed -En 's/.*github.com:(.*)/https:\\/\\/github.com\\/\\1/p' | xargs open ;}; f"
+	open-pr ="!f() { \
+		: git branch ; \
+		if [[ -z $1 ]]; \
+		then \
+			target=''; \
+		else \
+			target=\"$1...\"; \
+		fi; \
+		open \"$(git ls-remote --get-url $(git config --get branch.$(git branch --show-current).remote) \
+			| sed 's|git@github.com:\\(.*\\)$|https://github.com/\\1|' \
+			| sed 's|\\.git$||'; \
+		)/compare/$target$(\
+		git config --get branch.$(git branch --show-current).merge | cut -d '/' -f 3- \
+		)?expand=1\"; \
+	}; f"
+	ignore-local = "!git fetch && git reset --hard origin/$(git this)"
+[pull]
+	rebase = false
+[push]
+	autoSetupRemote = true
