@@ -1,11 +1,3 @@
-[url "git@github.com:"]
-        insteadOf = https://github.com/
-[url "git@bitbucket.org:"]
-        insteadOf = https://bitbucket.org/
-
-[includeIf "gitdir/i:/Users/mathiastg/private/"]
-	path = ~/.gitconfig_private
-
 [alias]
 	rdev = "!git checkout master && git pull && git branch -D develop && git checkout develop && git reset --hard master"
 	this = branch --show-current
